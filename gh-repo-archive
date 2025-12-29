@@ -261,7 +261,7 @@ fetch_and_clone() {
     -X GET \
     "${url}" 2>/dev/null | \
     grep -i '^link:' | \
-    grep -Po '(?<=<)[^>]+(?=>;\s*rel="next")' || true)
+    sed -nE 's/.*<([^>]+)>; *rel="next".*/\1/p' || true)
 
   if [[ -n "$next_link" ]]; then
     echo -e "${BOLD}Found next link ${next_link}${END}"
